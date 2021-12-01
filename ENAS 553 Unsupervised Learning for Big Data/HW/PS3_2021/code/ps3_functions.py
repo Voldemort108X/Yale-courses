@@ -166,28 +166,29 @@ def evaluate(model, evaluation_set):
     return accuracy
 
 # # ----- Functions for Part 5 -----
-# def mmd(X,Y, kernel_fn):
-#     """
-#     Implementation of Maximum Mean Discrepancy.
-#     :param X: An n x 1 numpy vector containing the samples from distribution 1.
-#     :param Y: An n x 1 numpy vector containing the samples from distribution 2.
-#     :param kernel_fn: supply the kernel function to use.
-#     :return: the maximum mean discrepancy:
-#     MMD(X,Y) = Expected value of k(X,X) + Expected value of k(Y,Y) - Expected value of k(X,Y)
-#     where k is a kernel function
-#     """
+def mmd(X,Y, kernel_fn):
+    """
+    Implementation of Maximum Mean Discrepancy.
+    :param X: An n x 1 numpy vector containing the samples from distribution 1.
+    :param Y: An n x 1 numpy vector containing the samples from distribution 2.
+    :param kernel_fn: supply the kernel function to use.
+    :return: the maximum mean discrepancy:
+    MMD(X,Y) = Expected value of k(X,X) + Expected value of k(Y,Y) - Expected value of k(X,Y)
+    where k is a kernel function
+    """
+    mmd = np.mean(kernel_fn(X, X)) + np.mean(kernel_fn(Y, Y)) - np.mean(kernel_fn(X, Y))
+    return mmd
 
-#     return mmd
 
-
-# def kernel(A, B):
-#     """
-#     A gaussian kernel on two arrays.
-#     :param A: An n x d numpy matrix containing the samples from distribution 1
-#     :param B: An n x d numpy matrix containing the samples from distribution 2.
-#     :return K:  An n x n numpy matrix k, in which k_{i,j} = e^{-||A_i - B_j||^2/(2*sigma^2)}
-#     """
-
-#     return K
+def kernel(A, B):
+    """
+    A gaussian kernel on two arrays.
+    :param A: An n x d numpy matrix containing the samples from distribution 1
+    :param B: An n x d numpy matrix containing the samples from distribution 2.
+    :return K:  An n x n numpy matrix k, in which k_{i,j} = e^{-||A_i - B_j||^2/(2*sigma^2)}
+    """
+    sigma = 1
+    K = np.exp(-np.abs(A-B)**2 / 2*sigma**2 )
+    return K
 
 
