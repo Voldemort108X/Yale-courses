@@ -136,20 +136,18 @@ for epoch in range(num_epochs):
     for data, target in train_loader:
         # perform training
         data = data.to('cuda')
-        noise = torch.randn((batch_size, nz)).to('cuda')
-        noise = torch.clamp(noise, 1e-8, 1)
-
-        optimizer_gen.zero_grad()
-
-        fake_data = generator(noise)
-        gen_loss_train = train_generator(optimizer_gen, fake_data=fake_data)
 
         optimizer_dis.zero_grad()
         noise = torch.randn((batch_size, nz)).to('cuda')
         noise = torch.clamp(noise, 1e-8, 1)
         fake_data = generator(noise)
-        # fake_data.detach()
         dis_loss_train = train_discriminator(optimizer_dis, real_data=data, fake_data=fake_data.detach())
+
+        optimizer_gen.zero_grad()
+        noise = torch.randn((batch_size, nz)).to('cuda')
+        noise = torch.clamp(noise, 1e-8, 1)
+        fake_data = generator(noise)
+        gen_loss_train = train_generator(optimizer_gen, fake_data=fake_data)
 
     if epoch % 10 == 0:
         # train_loss_list.append(train_loss), test_loss_list.append(test_loss)
