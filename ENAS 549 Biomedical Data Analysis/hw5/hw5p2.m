@@ -45,30 +45,30 @@ function b=gaussfit_hw(beta,b0,percsd)
  display(beta);
  %create the data
  % skip t=0 since 0^x not defined
- t=(1:5:100)';  %column vector
- yper=beta(1)*(t.^beta(2)).*exp(-beta(3)*t);
- n=length(t);
- p=3;
+ t = (1:5:100)';  %column vector
+ yper = beta(1)*(exp(-beta(2)*t) - exp(-beta(3)*t));
+ n = length(t);
+ p = 3;
  % simulate noisy data with percsd % error
- y=yper+randn(n,1)*percsd/100.*mean(yper);
+ y=yper + randn(n,1) * percsd;
  eps=.001;    %fractional change allowed
  b=b0;   % starting guess
  maxchg=1.0;
  maxiter=100;
  iter=0;
  display(b);
- eta1=b(1)*(t.^b(2)).*exp(-b(3)*t);
+ eta1 = b(1)*(exp(-b(2)*t) - exp(-b(3)*t));
  while ((maxchg > eps) & (iter < maxiter))
      iter=iter+1;
      % b(n+1)=b(n)+ inv(X'X)X'(y-eta(n))
      % current function evaluation
-     eta=b(1)*(t.^b(2)).*exp(-b(3)*t);
+     eta = b(1)*(exp(-b(2)*t) - exp(-b(3)*t));
      ss=sum((y-eta).^2);
      display(['Iteration ',int2str(iter),' Sum of squares is ',num2str(ss)]);
      % analytical derivatives
-     detadb1=(t.^b(2)).*exp(-b(3)*t);
-     detadb2=b(1).*log(t).*(t.^b(2)).*exp(-b(3)*t);
-     detadb3=b(1)*(t.^b(2)).*(-t).*exp(-b(3)*t);
+     detadb1 = exp(-b(2)*t) - exp(-b(3)*t);
+     detadb2 = -t.*(b(1)*exp(-b(2)*t));
+     detadb3 = t.*(b(1)*exp(-b(3)*t));
      xmat=zeros(n,p);
      xmat(:,1)=detadb1;
      xmat(:,2)=detadb2;
